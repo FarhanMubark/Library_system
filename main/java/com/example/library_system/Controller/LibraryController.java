@@ -18,7 +18,7 @@ public class LibraryController {
 
 
     final private LibrarinService librarinService;
-    
+
     @GetMapping("/get")
     public ResponseEntity getall(){
         return ResponseEntity.status(200).body(librarinService.getall());
@@ -31,9 +31,9 @@ public class LibraryController {
     }
 
     @PutMapping("/check/{username}/{password}")
-    public ResponseEntity checkLogin(@PathVariable String username, @PathVariable String pasword){
-        librarinService.checkLogin(username,pasword);
-        return ResponseEntity.status(200).body(new ApiResponse("user is login"));
+    public ResponseEntity checkLogin(@PathVariable String username, @PathVariable String password){
+       librarinService.checkLogin(username, password);
+        return ResponseEntity.status(200).body(new ApiResponse("User login"));
     }
 
     @PutMapping("/update/{id}")
@@ -46,6 +46,12 @@ public class LibraryController {
     public ResponseEntity deletelab(int id){
         librarinService.deleteLib(id);
         return ResponseEntity.status(200).body(new ApiResponse("librarian deleted"));
+    }
+
+    @GetMapping("/getby-email")
+    public ResponseEntity getbyEmail(@PathVariable String email){
+        Librarian librarian = librarinService.searchByEmail(email);
+        return ResponseEntity.status(200).body(librarian);
     }
 
 }
