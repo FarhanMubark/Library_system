@@ -1,7 +1,6 @@
 package com.example.library_system.Service;
 
-import com.example.library_system.Api.ApiExeption;
-import com.example.library_system.Model.Book;
+import com.example.library_system.Api.ApiException;
 import com.example.library_system.Model.Librarian;
 import com.example.library_system.Repository.LibrarinRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class LibrarinService {
         Librarian librarian1 = librarinRepository.findLibrarianById(id);
 
         if (librarian1 ==null){
-            throw new ApiExeption("Id not found");
+            throw new ApiException("Id not found");
         }
 
         librarian1.setName(librarian.getName());
@@ -37,12 +36,13 @@ public class LibrarinService {
         librarian1.setUsername(librarian.getUsername());
         librarian1.setPassword(librarian.getPassword());
         librarinRepository.save(librarian1);
+       
     }
 
     public void deleteLib(Integer id){
         Librarian librarian1 = librarinRepository.findLibrarianById(id);
         if (librarian1 ==null){
-            throw new ApiExeption("Id not found");
+            throw new ApiException("Id not found");
         }
 
         librarinRepository.delete(librarian1);
@@ -51,21 +51,29 @@ public class LibrarinService {
     public Librarian getLibById(Integer id){
         Librarian librarian1 = librarinRepository.findLibrarianById(id);
         if (librarian1 ==null){
-            throw new ApiExeption("Id not found");
+            throw new ApiException("Id not found");
         }
 
         return librarian1;
     }
 
-    public Boolean checkLogin(String username, String password){
+    public void checkLogin(String username, String password){
         Librarian librarian1 = librarinRepository.findLibrarianByUsernameAndPassword(username, password);
 
-        if (librarian1 ==null){
-            throw new ApiExeption("user not login");
+        if (librarian1==null){
+            throw new ApiException("User not found");
         }
 
-        return true;
+        librarinRepository.save(librarian1);
 
+    }
+
+    public Librarian searchByEmail(String email){
+        Librarian librarian1 = librarinRepository.findLibrarianByEmail(email);
+        if (librarian1 ==null){
+            throw new ApiException("account not found");
+        }
+        return librarian1;
     }
 
 }
